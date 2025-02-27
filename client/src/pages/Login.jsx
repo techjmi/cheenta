@@ -1,24 +1,28 @@
-import { useState } from "react";
+
+import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
-import { signin } from "../service/userApi";
+import { signin, getUserProfile } from "../service/userApi"; 
+import { DataContext } from "../context/Dataprovider"; 
 
 const Login = () => {
+  const { setCurrentUser } = useContext(DataContext); 
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
-  const handleChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-  
     try {
       const response = await signin(formData);
-  
       if (response.status === 200) {
         localStorage.setItem("ch_token", response.data.token);
         toast.success(response.data.message);
+        const userData = await getUserProfile();
+        setCurrentUser(userData);
         navigate("/profile");
       }
     } catch (error) {
@@ -27,6 +31,7 @@ const Login = () => {
       setIsSubmitting(false);
     }
   };
+
   return (
     <div className="flex justify-center min-h-screen">
       <div className="w-full max-w-md p-6 space-y-8">
@@ -37,9 +42,7 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium">
-              Email address
-            </label>
+            <label htmlFor="email" className="block text-sm font-medium"> Email address </label>
             <div className="mt-1">
               <input
                 id="email"
@@ -56,9 +59,7 @@ const Login = () => {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium">
-              Password
-            </label>
+            <label htmlFor="password" className="block text-sm font-medium"> Password </label>
             <div className="mt-1">
               <input
                 id="password"
@@ -86,10 +87,7 @@ const Login = () => {
         <div className="text-center">
           <p className="text-sm">
             Don't have an account?{" "}
-            <Link
-              to="/signup"
-              className="font-medium text-blue-600 hover:text-blue-500"
-            >
+            <Link to="/signup" className="font-medium text-blue-600 hover:text-blue-500">
               Sign up here
             </Link>
           </p>

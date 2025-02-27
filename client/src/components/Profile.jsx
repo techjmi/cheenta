@@ -28,7 +28,6 @@ const navigate= useNavigate()
     };
     fetchUserProfile();
   }, [currentUser, setCurrentUser]);
-  
 
   const handleDeleteProfile = async () => {
     try {
