@@ -51,7 +51,7 @@ const navigate= useNavigate()
   if (isLoading) return <ProfileSkeleton />;
 
   return (
-    <div className="max-w-4xl mx-auto text-center py-6">
+    <div className="max-w-4xl mx-auto text-center py-6 min-h-screen">
       {currentUser?.profilepic ? (
         <img
           src={currentUser.profilepic}

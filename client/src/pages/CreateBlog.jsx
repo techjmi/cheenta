@@ -87,7 +87,7 @@ const navigate= useNavigate()
           name="category"
           value={formData.category}
           onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-lg"
+          className="w-full px-4 py-2 border rounded-lg text-gray-800"
           required
         >
           <option value="">Select Category</option>
