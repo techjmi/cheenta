@@ -15,7 +15,7 @@ const BlogDetails = () => {
   const [loading, setLoading] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isLiking, setIsLiking] = useState(false);
-console.log('the blog is', blog)
+// console.log('the blog is', blog)
   useEffect(() => {
     const fetchBlog = async () => {
       try {
@@ -97,7 +97,7 @@ console.log('the blog is', blog)
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
+    <div className="max-w-4xl mx-auto md:p-4 p-2">
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg">
@@ -122,7 +122,7 @@ console.log('the blog is', blog)
       )}
 
       <article className="overflow-hidden">
-        <header className="p-6 border-b">
+        <header className="md:p-6 p-2 border-b">
           <div className="flex justify-between items-start mb-4">
             <h1 className="text-3xl font-bold">{blog.title}</h1>
             {isAuthor && (
@@ -174,7 +174,7 @@ console.log('the blog is', blog)
           </div>
         </header>
 
-        <div className="p-6">
+        <div className="md:p-6 p-2">
           {blog.image && (
             <img
               src={blog.image}
@@ -202,6 +202,13 @@ console.log('the blog is', blog)
           />
         </div>
       </article>
+      {currentUser ? (
+  <Comments postId={blog._id} userId={currentUser._id} />
+) : (
+  <p className="text-center text-gray-600 mt-4">
+    You need to <span className="text-blue-500 font-semibold cursor-pointer">log in</span> to view and add comments.
+  </p>
+)}
     </div>
   );
 };

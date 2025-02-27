@@ -13,7 +13,7 @@ export const createBlog = async (data) => {
   }
 };
 export const getAllBlogs = async (category = "") => {
-  console.log(category)
+  // console.log(category)
   try {
     const response = await axios.get(BASE_URL, {
       params: category ? { category } : {},
@@ -44,7 +44,7 @@ export const getBlogById = async (id) => {
 };
 
 export const getUserBlogs = async () => {
-  console.log('function is called')
+  // console.log('function is called')
   try {
     const response = await axios.get(`${BASE_URL}/my-blogs`, {
       headers: { Authorization: `Bearer ${token}` },

@@ -1,97 +1,106 @@
-import { useState } from "react";
-import { FaUserCircle, FaRegComment, FaPaperPlane } from "react-icons/fa";
-import { DataContext } from "../context/Dataprovider";
-import { useContext } from "react";
+import { useState, useEffect } from "react";
+import { createComment, getComments, deleteComment } from "../service/commentApi";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const Comments = ({ comments, onCommentSubmit }) => {
-  const [commentText, setCommentText] = useState("");
-  const { currentUser } = useContext(DataContext);
+const Comments = ({ postId, userId }) => {
+  const [comments, setComments] = useState([]);
+  const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const res = await getComments(postId);
+        setComments(res || []);
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+        toast.error("Failed to load comments");
+      }
+    };
+    fetchComments();
+  }, [postId]);
+
+  const addComment = async (e) => {
     e.preventDefault();
-    if (commentText.trim()) {
-      onCommentSubmit(commentText.trim());
-      setCommentText("");
+    if (!content.trim()) return;
+    setLoading(true);
+    try {
+      const res = await createComment(content, postId);
+      if (res.status === 200) {
+        setComments((prev) => [res.data, ...prev]);
+        setContent("");
+        toast.success("Comment added successfully!");
+      }
+    } catch (error) {
+      console.error("Error adding comment:", error);
+      toast.error("Failed to add comment");
+    }
+    setLoading(false);
+  };
+
+  const handleDelete = async (commentId) => {
+    try {
+      const res = await deleteComment(commentId);
+      if (res.status === 200) {
+        setComments((prev) => prev.filter((c) => c._id !== commentId));
+        toast.success("Comment deleted successfully!");
+      }
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+      toast.error("Failed to delete comment");
     }
   };
 
   return (
-    <div className="mt-12 border-t pt-8">
-      <div className="max-w-2xl mx-auto">
-        {/* Comments Header */}
-        <div className="flex items-center gap-2 mb-6">
-          <FaRegComment className="text-xl" />
-          <h3 className="text-xl font-semibold">
-            Comments ({comments.length})
-          </h3>
-        </div>
+    <div className="md:p-4 max-w-xl mx-auto p-2">
+      <h3 className="text-lg font-semibold mb-3">Comments</h3>
+      <form onSubmit={addComment} className="mb-4">
+        <textarea
+          className="w-full p-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-400"
+          rows="3"
+          placeholder="Write a comment..."
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        ></textarea>
+        <button
+          type="submit"
+          className="mt-2 w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 disabled:opacity-50"
+          disabled={loading}
+        >
+          {loading ? "Posting..." : "Comment"}
+        </button>
+      </form>
 
-        {/* Comments List */}
-        <div className="space-y-6 mb-8">
-          {comments.map((comment) => (
-            <div key={comment._id} className="flex gap-4">
-              <div className="flex-shrink-0">
-                {comment.user.avatar ? (
-                  <img
-                    src={comment.user.avatar}
-                    alt={comment.user.fullname}
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                ) : (
-                  <FaUserCircle className="text-3xl text-gray-500" />
-                )}
-              </div>
+      <div className="space-y-4">
+        {comments.length > 0 ? (
+          comments.map((comment) => (
+            <div
+              key={comment._id}
+              className="p-3  rounded-lg shadow flex items-start space-x-3"
+            >
+              <img
+                src={comment.userId?.profilepic || ""}
+                alt={comment.userId?.fullname || "User"}
+                className="w-10 h-10 rounded-full object-cover border"
+              />
               <div className="flex-1">
-                <div className="flex items-center gap-3 mb-1">
-                  <span className="font-medium">{comment.user.fullname}</span>
-                  <span className="text-sm text-gray-500">
-                    {new Date(comment.createdAt).toLocaleDateString()}
-                  </span>
-                </div>
-                <p className="text-gray-800 dark:text-gray-200">
-                  {comment.text}
-                </p>
+                <p className="font-semibold">{comment.userId?.fullname || "Anonymous"}</p>
+                <p className="">{comment.content}</p>
               </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Add Comment Form */}
-        <form onSubmit={handleSubmit} className="border rounded-lg p-4">
-          <div className="flex gap-4">
-            <div className="flex-shrink-0">
-              {currentUser?.avatar ? (
-                <img
-                  src={currentUser.avatar}
-                  alt={currentUser.fullname}
-                  className="w-10 h-10 rounded-full object-cover"
-                />
-              ) : (
-                <FaUserCircle className="text-3xl text-gray-500" />
+              {comment.userId?._id === userId && (
+                <button
+                  onClick={() => handleDelete(comment._id)}
+                  className="text-red-500 hover:text-red-700 text-sm"
+                >
+                  Delete
+                </button>
               )}
             </div>
-            <div className="flex-1 space-y-4">
-              <textarea
-                value={commentText}
-                onChange={(e) => setCommentText(e.target.value)}
-                placeholder="Write your comment..."
-                className="w-full p-2 border-b focus:outline-none focus:border-blue-500"
-                rows="2"
-                disabled={!currentUser}
-              />
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  disabled={!commentText.trim() || !currentUser}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <FaPaperPlane className="inline mr-2" />
-                  Post Comment
-                </button>
-              </div>
-            </div>
-          </div>
-        </form>
+          ))
+        ) : (
+          <p className="text-gray-500">No comments yet. Be the first to comment!</p>
+        )}
       </div>
     </div>
   );

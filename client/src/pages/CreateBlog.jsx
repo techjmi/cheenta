@@ -13,6 +13,7 @@ const CreateBlog = () => {
     tags: "",
     image: "",
   });
+  const[loading,setLoading]=useState(false)
 const navigate= useNavigate()
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,6 +47,7 @@ const navigate= useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true)
     const { title, content, category, tags, image } = formData;
 
     try {
@@ -65,6 +67,7 @@ const navigate= useNavigate()
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to create blog!");
     }
+    setLoading(false)
   };
 
   return (
@@ -118,8 +121,15 @@ const navigate= useNavigate()
             toolbar: [[{ header: [1, 2, false] }], ["bold", "italic", "underline", "blockquote"], [{ list: "ordered" }, { list: "bullet" }], ["link", "code-block"], ["clean"]],
           }}
         />
-        <button type="submit" className="w-full px-6 py-3 font-medium rounded-lg hover:opacity-90">
+        {/* <button type="submit" className="w-full px-6 py-3 font-medium rounded-lg hover:opacity-90">
           Publish Post
+        </button> */}
+          <button
+          type="submit"
+          className="mt-2 w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 disabled:opacity-50"
+          disabled={loading}
+        >
+          {loading ? "Posting..." : "Publish"}
         </button>
       </form>
     </div>

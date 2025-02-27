@@ -2,18 +2,25 @@ import { Link } from "react-router-dom";
 
 const BlogCard = ({ blog }) => {
   return (
-    <div className="border rounded-lg overflow-hidden shadow-md">
+    <div className="border rounded-lg overflow-hidden shadow-md relative">
       {blog.image && (
-        <img
-          src={blog.image}
-          alt={blog.title}
-          className="w-full h-48 object-cover"
-        />
+        <div className="relative">
+          <img
+            src={blog.image}
+            alt={blog.title}
+            className="w-full h-48 object-cover"
+          />
+          {blog.category && (
+            <span className="absolute top-2 right-2 bg-gray-700 text-white  font-semibold px-3 py-1 rounded-full">
+              {blog.category}
+            </span>
+          )}
+        </div>
       )}
       <div className="p-4">
         <h2 className="text-lg font-semibold">{blog.title}</h2>
         <p
-          className="text-sm text-gray-600 line-clamp-3"
+          className="text-sm line-clamp-3"
           dangerouslySetInnerHTML={{ __html: blog.content }}
         ></p>
         <p className="text-sm font-medium mt-2">

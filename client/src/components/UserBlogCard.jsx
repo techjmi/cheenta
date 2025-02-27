@@ -33,8 +33,8 @@ const UserBlogCard = React.memo(({ blog }) => {
         </div>
 
         {/* Post Text Part */}
-        <div className="w-full md:w-2/3 flex flex-col justify-between">
-          <div>
+        <div className="w-full md:w-2/3 flex flex-col justify-between text-left">
+          <div className="self-start">
             <p className="text-sm mb-3">{formattedDate}</p>
             <Link to={`/blog/${blog._id}`}>
               <h2 className="text-lg font-bold text-primary hover:text-primary-hover">
@@ -42,13 +42,13 @@ const UserBlogCard = React.memo(({ blog }) => {
               </h2>
             </Link>
             <p
-              className="mt-1"
+              className="mt-1 text-left"
               dangerouslySetInnerHTML={{
                 __html: blog?.content.slice(0, 150) + "....",
               }}
             />
           </div>
-          <div className="mt-3 flex justify-between items-center">
+          <div className="mt-3 flex justify-between">
             <span className="text-xs text-muted-foreground italic">
               {readTime} min read (Approx)
             </span>

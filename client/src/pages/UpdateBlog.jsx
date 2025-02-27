@@ -69,7 +69,7 @@ const navigate= useNavigate()
         category: formData.category,
         tags: formData.tags, 
       });
-      console.log('the update blog res', response)
+      // console.log('the update blog res', response)
       if(response.status===200){
 toast.success(response.data.message)
 navigate('/')

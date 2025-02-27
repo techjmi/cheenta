@@ -23,7 +23,7 @@ const SearchPage = () => {
       try {
         const response = await fetchSearchPost(searchTerm);
         // const data = await response.json();
-        console.log("the seatc", response);
+        // console.log("the seatc", response);
         setPosts(response.blogs);
       } catch (error) {
         console.error("Error fetching posts:", error);

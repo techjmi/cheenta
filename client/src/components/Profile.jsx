@@ -13,17 +13,22 @@ const Profile = () => {
 const navigate= useNavigate()
   useEffect(() => {
     const fetchUserProfile = async () => {
-      try {
-        const userData = await getUserProfile();
-        setCurrentUser(userData);
-      } catch (error) {
-        toast.error(error.response?.data?.message || "Error fetching profile");
-      } finally {
+      if (!currentUser) { 
+        try {
+          const userData = await getUserProfile();
+          setCurrentUser(userData);
+        } catch (error) {
+          toast.error(error.response?.data?.message || "Error fetching profile");
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
         setIsLoading(false);
       }
     };
     fetchUserProfile();
-  }, [setCurrentUser]);
+  }, [currentUser, setCurrentUser]);
+  
 
   const handleDeleteProfile = async () => {
     try {
