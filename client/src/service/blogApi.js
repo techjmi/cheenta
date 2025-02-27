@@ -10,6 +10,7 @@ export const createBlog = async (data) => {
     return response;
   } catch (error) {
     console.log("Error while creating blog:", error.message);
+    throw error
   }
 };
 export const getAllBlogs = async (category = "") => {
@@ -21,6 +22,7 @@ export const getAllBlogs = async (category = "") => {
     return response;  
   } catch (error) {
     console.log("Error while fetching blogs:", error.message);
+    throw error
   }
 };
 export const fetchSearchPost = async (searchQuery) => {
@@ -39,11 +41,12 @@ export const getBlogById = async (id) => {
     const response = await axios.get(`${BASE_URL}/${id}`);
     return response;
   } catch (error) {
+    throw error
     console.log("Error while fetching blog:", error.message);
   }
 };
 
-export const getUserBlogs = async () => {
+export const getUserBlogs = async (token) => {
   // console.log('function is called')
   try {
     const response = await axios.get(`${BASE_URL}/my-blogs`, {
@@ -52,6 +55,7 @@ export const getUserBlogs = async () => {
     // console.log('the user blog is',response)
     return response;
   } catch (error) {
+    throw error
     console.log("Error while fetching user blogs:", error.message);
   }
 };
@@ -62,6 +66,7 @@ export const updateBlog = async (id, data) => {
     });
     return response;
   } catch (error) {
+    throw error
     console.log("Error while updating blog:", error.message);
   }
 };
@@ -73,11 +78,12 @@ export const deleteBlog = async (id) => {
     });
     return response;
   } catch (error) {
+    throw error
     console.log("Error while deleting blog:", error.message);
   }
 };
 
-export const toggleLikeBlog = async (id) => {
+export const toggleLikeBlog = async (id, tok) => {
   try {
     const response = await axios.post(`${BASE_URL}/${id}/like`, {}, {
       headers: { Authorization: `Bearer ${token}` },
@@ -85,5 +91,6 @@ export const toggleLikeBlog = async (id) => {
     return response;
   } catch (error) {
     console.log("Error while toggling like:", error.message);
+    throw error
   }
 };

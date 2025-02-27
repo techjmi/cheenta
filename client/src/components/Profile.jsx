@@ -7,16 +7,17 @@ import { toast } from "react-toastify";
 import ProfileSkeleton from "../skeleton/ProfileSkeleton";
 import UserBlog from "./UserBlog"
 const Profile = () => {
-  const { currentUser, setCurrentUser , logout} = useContext(DataContext);
+  const { currentUser, updateUser , logout} = useContext(DataContext);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 const navigate= useNavigate()
+const tok=localStorage.getItem('ch_token')
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (!currentUser) { 
         try {
-          const userData = await getUserProfile();
-          setCurrentUser(userData);
+          const userData = await getUserProfile(tok);
+          updateUser(userData);
         } catch (error) {
           toast.error(error.response?.data?.message || "Error fetching profile");
         } finally {
@@ -27,7 +28,7 @@ const navigate= useNavigate()
       }
     };
     fetchUserProfile();
-  }, [currentUser, setCurrentUser]);
+  }, [currentUser, updateUser,tok]);
 
   const handleDeleteProfile = async () => {
     try {

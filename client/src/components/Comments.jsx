@@ -20,21 +20,23 @@ const Comments = ({ postId, userId }) => {
     };
     fetchComments();
   }, [postId]);
-
   const addComment = async (e) => {
     e.preventDefault();
     if (!content.trim()) return;
     setLoading(true);
     try {
       const res = await createComment(content, postId);
-      if (res.status === 200) {
+      // console.log(res)
+      if (res.status === 201) {
         setComments((prev) => [res.data, ...prev]);
         setContent("");
-        toast.success("Comment added successfully!");
+        toast.success(res.data.message);
+        await getComments(postId)
       }
     } catch (error) {
       console.error("Error adding comment:", error);
-      toast.error("Failed to add comment");
+      // toast.error();
+      toast.error(error.response?.data?.message || "Failed to add comment");
     }
     setLoading(false);
   };
@@ -42,6 +44,7 @@ const Comments = ({ postId, userId }) => {
   const handleDelete = async (commentId) => {
     try {
       const res = await deleteComment(commentId);
+      // console.log(res)
       if (res.status === 200) {
         setComments((prev) => prev.filter((c) => c._id !== commentId));
         toast.success("Comment deleted successfully!");

@@ -9,6 +9,7 @@ export const postData = async (data) => {
     return response;
   } catch (error) {
     console.log("Error while posting signup data:", error.message);
+    throw error
   }
 };
 // Signin
@@ -18,18 +19,20 @@ export const signin = async (data) => {
     return response;
   } catch (error) {
     console.log("Error while posting signin data:", error.message);
+    throw error
   }
 };
 // Get user profile
-export const getUserProfile = async () => {
+export const getUserProfile = async (tok) => {
   try {
     const response = await axios.get(`${user_url}/user`, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${tok}` },
     });
     // console.log('the profile data ', response)
     return response.data;
   } catch (error) {
     console.log("Error while fetching user profile:", error.message);
+    throw error
   }
 };
 // Update user profile
@@ -41,6 +44,7 @@ export const updateUserProfile = async (data,id) => {
     return response;
   } catch (error) {
     console.log("Error while updating user profile:", error.message);
+    throw error
   }
 };
 // Delete user
@@ -52,5 +56,6 @@ export const deleteUserProfile = async (id) => {
     return response;
   } catch (error) {
     console.log("Error while deleting user:", error.message);
+    throw error
   }
 };

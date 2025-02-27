@@ -14,7 +14,7 @@ export const createComment = async (content, postId) => {
                 }
             }
         );
-        return response.data; 
+        return response; 
     } catch (error) {
         console.error("Error creating comment:", error.response?.data || error.message);
         throw error;
@@ -41,7 +41,7 @@ export const deleteComment = async (commentId) => {
                 Authorization: `Bearer ${token}`
             }
         });
-        return response.data; 
+        return response; 
     } catch (error) {
         console.error("Error deleting comment:", error.response?.data || error.message);
         throw error;

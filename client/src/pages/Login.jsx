@@ -6,23 +6,24 @@ import { signin, getUserProfile } from "../service/userApi";
 import { DataContext } from "../context/Dataprovider"; 
 
 const Login = () => {
-  const { setCurrentUser } = useContext(DataContext); 
+  const { updateUser } = useContext(DataContext); 
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
-
+const tok= localStorage.getItem('ch_token')
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
       const response = await signin(formData);
+      console.log(response)
       if (response.status === 200) {
         localStorage.setItem("ch_token", response.data.token);
         toast.success(response.data.message);
-        const userData = await getUserProfile();
-        setCurrentUser(userData);
+        // const userData = await getUserProfile(tok);
+        // updateUser(userData);
         navigate("/profile");
       }
     } catch (error) {

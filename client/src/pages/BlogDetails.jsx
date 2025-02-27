@@ -15,6 +15,7 @@ const BlogDetails = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isLiking, setIsLiking] = useState(false);
 // console.log('the blog is', blog)
+const tok=localStorage.getItem("ch_user")
   useEffect(() => {
     const fetchBlog = async () => {
       try {
@@ -51,22 +52,31 @@ const BlogDetails = () => {
     if (isLiking) return;
     setIsLiking(true);
     try {
-      const response = await toggleLikeBlog(id);
+      const response = await toggleLikeBlog(id, tok);
+      
       if (response.status === 200) {
-        setBlog((prevBlog) => ({
-          ...prevBlog,
-          likes: response.data.likes || [],
-        }));
+        setBlog((prevBlog) => {
+          if (!prevBlog) return prevBlog; 
+          const hasLiked = prevBlog.likes.includes(currentUser._id);
+          return {
+            ...prevBlog,
+            likes: hasLiked
+              ? prevBlog.likes.filter((uid) => uid !== currentUser._id) 
+              : [...prevBlog.likes, currentUser._id], 
+          };
+        });
       } else {
         toast.error(response.data.message || "Failed to update like status");
       }
     } catch (error) {
       console.error("Error toggling like:", error);
-      toast.error("Error updating like status");
+      // toast.error("Error updating like status");
+      toast.error(error.response?.data?.message || "Failed to add comment");
     } finally {
       setIsLiking(false);
     }
-  }, [id, isLiking]);
+  }, [id, isLiking, currentUser, tok]);
+  
   const isAuthor = useMemo(
     () => currentUser?._id === blog?.userId?._id,
     [currentUser, blog]
@@ -198,7 +208,9 @@ const BlogDetails = () => {
   <Comments postId={blog._id} userId={currentUser._id} />
 ) : (
   <p className="text-center text-gray-600 mt-4">
-    You need to <span className="text-blue-500 font-semibold cursor-pointer">log in</span> to view and add comments.
+    You need to <span className="text-blue-500 font-semibold cursor-pointer">
+      <Link to='/signin'>Login</Link>
+      </span> to view and add comments.
   </p>
 )}
     </div>

@@ -6,11 +6,11 @@ import UserBlogCard from "./UserBlogCard";
 const UserBlog = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
-
+const token =localStorage.getItem('ch_token')
   const fetchUserBlogs = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await getUserBlogs();
+      const response = await getUserBlogs(token);
       if (response.status === 200) {
         setBlogs(response.data || []);
       }
@@ -23,7 +23,7 @@ const UserBlog = () => {
 
   useEffect(() => {
     fetchUserBlogs();
-  }, [fetchUserBlogs]);
+  }, [fetchUserBlogs, token]);
 
   const skeletons = useMemo(
     () => Array.from({ length: 3 }, (_, index) => <UserBlogSkeleton key={index} />),
