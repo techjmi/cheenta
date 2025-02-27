@@ -4,7 +4,6 @@ import "react-quill/dist/quill.snow.css";
 import { createBlog } from "../service/blogApi";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
 const CreateBlog = () => {
   const [formData, setFormData] = useState({
     title: "",
@@ -31,7 +30,6 @@ const navigate= useNavigate()
     formData.append("file", file);
     formData.append("upload_preset", "ChatApp"); 
     formData.append("cloud_name", "saltechapp");
-
     try {
       const res = await fetch("https://api.cloudinary.com/v1_1/saltechapp/image/upload", {
         method: "POST",
@@ -44,7 +42,6 @@ const navigate= useNavigate()
       toast.error("Image upload failed!");
     }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true)
@@ -69,7 +66,6 @@ const navigate= useNavigate()
     }
     setLoading(false)
   };
-
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-6">
       <h1 className="text-2xl font-semibold">Create New Blog Post</h1>
@@ -121,9 +117,6 @@ const navigate= useNavigate()
             toolbar: [[{ header: [1, 2, false] }], ["bold", "italic", "underline", "blockquote"], [{ list: "ordered" }, { list: "bullet" }], ["link", "code-block"], ["clean"]],
           }}
         />
-        {/* <button type="submit" className="w-full px-6 py-3 font-medium rounded-lg hover:opacity-90">
-          Publish Post
-        </button> */}
           <button
           type="submit"
           className="mt-2 w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 disabled:opacity-50"

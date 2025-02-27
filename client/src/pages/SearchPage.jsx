@@ -6,24 +6,20 @@ const SearchPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-  const [posts, setPosts] = useState([]); 
+  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const term = params.get("searchTerm") || "";
     setSearchTerm(term);
   }, [location.search]);
-
   // Fetch blog posts based on searchTerm
   useEffect(() => {
     if (!searchTerm) return;
-
     const fetchPosts = async () => {
       setLoading(true);
       try {
         const response = await fetchSearchPost(searchTerm);
-        // const data = await response.json();
-        // console.log("the seatc", response);
         setPosts(response.blogs);
       } catch (error) {
         console.error("Error fetching posts:", error);
@@ -38,13 +34,11 @@ const SearchPage = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim() === "") return;
-
     // Update URL with new search term
     const params = new URLSearchParams();
     params.set("searchTerm", searchTerm);
     navigate(`/search?${params.toString()}`);
   };
-
   return (
     <div className="flex flex-col md:flex-row">
       {/* Left Sidebar with Search Box */}
@@ -71,7 +65,6 @@ const SearchPage = () => {
           </button>
         </form>
       </div>
-
       {/* Search Results Section */}
       <div className="w-full">
         <h1 className="text-3xl font-semibold text-center sm:border-b border-gray-500 p-3 mt-2">
@@ -80,7 +73,7 @@ const SearchPage = () => {
         <div className="p-7 flex flex-wrap gap-4 items-center justify-center">
           {loading ? (
             <p>Loading...</p>
-          ) : posts.length > 0 ? ( // Check if posts exist
+          ) : posts.length > 0 ? ( 
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {posts.map((blog) => (
                 <BlogCard key={blog._id} blog={blog} />

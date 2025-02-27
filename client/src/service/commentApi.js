@@ -1,8 +1,6 @@
 import axios from "axios";
-
 const url = "/api/comments"; 
 const token = localStorage.getItem("ch_token");
-
 // Create a comment
 export const createComment = async (content, postId) => {
     try {

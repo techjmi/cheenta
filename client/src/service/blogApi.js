@@ -55,7 +55,6 @@ export const getUserBlogs = async () => {
     console.log("Error while fetching user blogs:", error.message);
   }
 };
-
 export const updateBlog = async (id, data) => {
   try {
     const response = await axios.put(`${BASE_URL}/${id}`, data, {

@@ -11,7 +11,6 @@ export const postData = async (data) => {
     console.log("Error while posting signup data:", error.message);
   }
 };
-
 // Signin
 export const signin = async (data) => {
   try {
@@ -21,7 +20,6 @@ export const signin = async (data) => {
     console.log("Error while posting signin data:", error.message);
   }
 };
-
 // Get user profile
 export const getUserProfile = async () => {
   try {
@@ -34,7 +32,6 @@ export const getUserProfile = async () => {
     console.log("Error while fetching user profile:", error.message);
   }
 };
-
 // Update user profile
 export const updateUserProfile = async (data,id) => {
   try {
@@ -46,7 +43,6 @@ export const updateUserProfile = async (data,id) => {
     console.log("Error while updating user profile:", error.message);
   }
 };
-
 // Delete user
 export const deleteUserProfile = async (id) => {
   try {

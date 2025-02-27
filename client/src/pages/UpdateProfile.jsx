@@ -14,7 +14,7 @@ const UpdateProfile = () => {
     bio: "",
     profilepic: "",
   });
-  console.log('the use data', userData)
+  // console.log('the use data', userData)
   const [isSubmitting, setIsSubmitting] = useState(false);
   // Fetch user profile on mount
   useEffect(() => {
@@ -74,11 +74,6 @@ const UpdateProfile = () => {
       setIsSubmitting(true);
 
       try {
-        // const formData = new FormData();
-        // formData.append("name", userData.name);
-        // formData.append("bio", userData.bio);
-        // formData.append("profilepic", userData.profilepic);
-
         const updatedUser = await updateUserProfile(userData, id);
         setCurrentUser(updatedUser);
         navigate("/profile");
@@ -170,6 +165,4 @@ const UpdateProfile = () => {
     </div>
   );
 };
-
-// Prevents unnecessary re-renders when props/state don't change
 export default React.memo(UpdateProfile);

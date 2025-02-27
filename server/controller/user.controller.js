@@ -26,10 +26,8 @@ const signup = async (req, res) => {
 const signin = async (req, res) => {
   try {
     const { email, password } = req.body;
-    // User check
     const user = await Ch_User.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
-    // Password validation
     const isPasswordValid = await bcrypt.compareSync(password, user.password);
     if (!isPasswordValid)
       return res.status(400).json({ message: "Invalid credentials" });
@@ -47,17 +45,14 @@ const signin = async (req, res) => {
     res.status(500).json({ message: "Something went wrong" });
   }
 };
-
 const updateUser = async (req, res) => {
   try {
     if (req.user.id !== req.params.id && !req.user.isAdmin) {
       return res.status(403).json({ message: "Access denied" });
     }
-
     const { fullname, email, password, profilepic } = req.body;
     const updatedData = { fullname, email, profilepic };
     if (password) updatedData.password = await bcrypt.hash(password, 10);
-
     const updatedUser = await Ch_User.findByIdAndUpdate(
       req.params.id,
       updatedData,
@@ -72,7 +67,6 @@ const updateUser = async (req, res) => {
     res.status(500).json({ message: "Something went wrong" });
   }
 };
-
 const getUser = async (req, res) => {
   try {
     if (!req.user.id) {

@@ -6,7 +6,6 @@ import { getBlogById, deleteBlog, toggleLikeBlog } from "../service/blogApi";
 import { DataContext } from "../context/Dataprovider";
 import Comments from "../components/Comments";
 import { toast } from "react-toastify";
-
 const BlogDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -68,17 +67,14 @@ const BlogDetails = () => {
       setIsLiking(false);
     }
   }, [id, isLiking]);
-
   const isAuthor = useMemo(
     () => currentUser?._id === blog?.userId?._id,
     [currentUser, blog]
   );
-
   const hasLiked = useMemo(
     () => Array.isArray(blog?.likes) && blog.likes.includes(currentUser?._id),
     [blog, currentUser]
   );
-
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -86,7 +82,6 @@ const BlogDetails = () => {
       </div>
     );
   }
-
   if (!blog) {
     return (
       <div className="max-w-4xl mx-auto p-4 text-center">
@@ -95,7 +90,6 @@ const BlogDetails = () => {
       </div>
     );
   }
-
   return (
     <div className="max-w-4xl mx-auto md:p-4 p-2">
       {showDeleteModal && (
@@ -120,7 +114,6 @@ const BlogDetails = () => {
           </div>
         </div>
       )}
-
       <article className="overflow-hidden">
         <header className="md:p-6 p-2 border-b">
           <div className="flex justify-between items-start mb-4">
@@ -142,7 +135,6 @@ const BlogDetails = () => {
               </div>
             )}
           </div>
-
           <div className="flex flex-wrap justify-between items-center gap-4">
             <div className="flex items-center gap-2">
               {blog.userId?.image && (

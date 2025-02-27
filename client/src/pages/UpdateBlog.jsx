@@ -17,7 +17,6 @@ const UpdateBlog = () => {
 const navigate= useNavigate()
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   useEffect(() => {
     const fetchBlog = async () => {
       try {
@@ -43,22 +42,18 @@ const navigate= useNavigate()
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
   const handleContentChange = (value) => {
     setFormData({ ...formData, content: value });
   };
-
   const removeTag = (indexToRemove) => {
     setFormData({
       ...formData,
       tags: formData.tags.filter((_, index) => index !== indexToRemove),
     });
   };
-
   const handleTagInputChange = (e) => {
     setFormData({ ...formData, inputTag: e.target.value });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -78,7 +73,6 @@ navigate('/')
       setIsSubmitting(false);
     }
   };
-
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -86,7 +80,6 @@ navigate('/')
       </div>
     );
   }
-
   return (
     <div className="flex justify-center items-center min-h-screen">
       <div className="px-2 w-full max-w-2xl">
@@ -149,7 +142,7 @@ navigate('/')
                 <input
                   type="text"
                   name="inputTag"
-                  value={formData.inputTag} // Corrected binding
+                  value={formData.inputTag} 
                   onChange={handleTagInputChange}
                   placeholder="Add Tags"
                   className="w-full focus:outline-none"
@@ -157,7 +150,6 @@ navigate('/')
               </div>
             </div>
           </div>
-
           {/* Content Editor */}
           <div>
             <label className="block text-sm font-medium mb-2">Content</label>
@@ -176,7 +168,6 @@ navigate('/')
               }}
             />
           </div>
-
           {/* Submit Button */}
           <button
             type="submit"

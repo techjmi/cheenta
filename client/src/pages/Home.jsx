@@ -10,7 +10,7 @@ const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   // console.log("the cat is", category);
   const handleCategoryClick = (selectedCategory) => {
-    console.log("Selected Category:", selectedCategory);
+    // console.log("Selected Category:", selectedCategory);
     setSelectedCategory(selectedCategory);
   };
   useEffect(() => {

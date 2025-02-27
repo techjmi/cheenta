@@ -20,8 +20,6 @@ function App() {
     <div className={`flex flex-col min-h-screen ${theme === "light" ? "bg-white text-black" : "bg-black text-white"}`}>
       <BrowserRouter>
         <Navbar />
-        
-        {/* ✅ Add flex-grow to push footer down */}
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />

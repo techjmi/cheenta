@@ -18,23 +18,19 @@ const Signup = () => {
     setIsSubmitting(true);
     try {
       const response = await postData(formData);
-      // Handle successful response (201 status)
       toast.success(response.data.message || "Signup successful! Please login.");
       navigate("/signin");
     } catch (error) {
       // Handle error responses
       const errorMessage = error.response?.data?.message || "Signup failed!";
       toast.error(errorMessage);
-      // Optionally handle specific status codes
       if (error.response?.status === 400) {
-        // Handle existing user case specifically
         console.log("User already exists:", errorMessage);
       }
     } finally {
       setIsSubmitting(false);
     }
   };
-
   return (
     <div className="flex items-center justify-center">
       <div className="w-full max-w-md p-6 rounded-lg ">
